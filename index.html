@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NaijIntern – SIWES & IT Placement Portal</title>
+  <link rel="icon" href="Images/logo.PNG">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-brand" onclick="goTo('home')">Naij<span>Intern</span><span class="badge-siwes">SIWES</span></div>
+  <!-- HAMBURGER -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- NAV MENU -->
+    <div class="nav-menu" id="navMenu">
+      <div class="nav-links">
+        <button id="nb-home"      onclick="goTo('home')">Home</button>
+        <button id="nb-browse"    onclick="goTo('browse')">Browse</button>
+        <button id="nb-dashboard" onclick="goTo('dashboard')">Dashboard</button>
+      </div>
+      <div class="nav-right" id="nav-auth">
+        <button class="nav-auth-btn" onclick="goTo('login')">Login / Register</button>
+      </div>
+    </div>
+    
+</nav>
+
+<!-- TOAST-->
+<div id="toast"></div>
+
+<!-- APPLY MODAL -->
+<div class="modal-overlay" id="applyModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3 id="m-title"></h3>
+        <p id="m-sub"></p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="m-match"></div>
+      <form id="applyForm" onsubmit="submitApply(event)">
+        <input type="hidden" id="a-cid" />
+        <div class="form-group">
+          <label class="lbl">Full Name</label>
+          <input type="text" id="a-name" readonly />
+        </div>
+        <div class="form-group">
+          <label class="lbl">Email Address</label>
+          <input type="email" id="a-email" readonly />
+        </div>
+        <div class="form-group">
+          <label class="lbl">School & Department</label>
+          <input type="text" id="a-school" readonly />
+        </div>
+        <div class="form-group">
+          <label class="lbl">Cover Letter <span style="color:var(--red)">*</span></label>
+          <textarea id="a-cover" placeholder="Why are you a good fit for this placement?"></textarea>
+        </div>
+        <button type="submit" class="btn-green full" style="margin-top:8px;">Submit Application</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- PAGE 1 — HOME -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">Nigeria's Verified SIWES & Internship Portal</div>
+        <h1>Find Your <span class="hl">IT Placement</span><br>or SIWES Opportunity</h1>
+        <p class="hero-desc">Connecting Nigerian university students with top verified companies across all 36 states and FCT. Get placed faster with our smart skill-matching system.</p>
+        <div class="hero-btns">
+          <button class="hero-btn-main" onclick="goTo('login')">Get Started Free</button>
+          <button class="hero-btn-out"  onclick="goTo('browse')">Browse Companies</button>
+        </div>
+        <div class="hero-stats">
+          <div><span class="h-stat-num" id="h-stu">0</span><span class="h-stat-lbl">Students</span></div>
+          <div><span class="h-stat-num">40+</span><span class="h-stat-lbl">Companies</span></div>
+          <div><span class="h-stat-num" id="h-app">0</span><span class="h-stat-lbl">Applications</span></div>
+          <div><span class="h-stat-num">36</span><span class="h-stat-lbl">States</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" style="background:white;">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:36px;">
+        <div class="sec-label">Simple Process</div>
+        <h2 class="sec-title">How NaijIntern Works</h2>
+        <p class="sec-sub">4 easy steps to land your SIWES or IT placement</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card"><div class="step-num">1</div><h4>Create Profile</h4><p>Register with your school, department, level and location.</p></div>
+        <div class="step-card"><div class="step-num">2</div><h4>Search & Filter</h4><p>Browse companies by location, industry or the skills they need.</p></div>
+        <div class="step-card"><div class="step-num">3</div><h4>Apply & Track</h4><p>Submit your application and track its status live on your dashboard.</p></div>
+        <div class="step-card"><div class="step-num">4</div><h4>Get Placed!</h4><p>Receive your offer letter and ITF placement form and begin your journey.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED COMPANIES -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="sec-head-row">
+        <div><div class="sec-label">Top Picks</div><h2 class="sec-title" style="margin-bottom:0;">Featured Companies</h2></div>
+        <button class="btn-green" onclick="goTo('browse')" style="font-size:.8rem;">View All →</button>
+      </div>
+      <div class="cards-grid" id="feat-grid"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to Start Your Placement Journey?</h2>
+    <p>Join thousands of Nigerian students who found SIWES placements through NaijIntern.</p>
+    <div class="cta-btns">
+      <button class="cta-btn-dark" onclick="goTo('login')">Register as Student</button>
+      <button class="cta-btn-out"  onclick="goTo('browse')">Browse Companies</button>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Made by Cynthia Adianu with ❤️ for Nigerian Students &nbsp;·&nbsp; &copy; <span id="year"></span> <span>NaijIntern</span> &nbsp;·&nbsp; Powered by ITF & SIWES Standards</p>
+  </footer>
+</div>
+
+
+<!-- PAGE 2 — BROWSE -->
+<div class="page" id="page-browse">
+  <div class="browse-header">
+    <div class="browse-header-inner">
+      <h2>Browse IT Companies</h2>
+      <p>Find your perfect placement by location, industry, or skill</p>
+      <div class="filter-bar">
+        <input type="text" id="q-s" placeholder="🔍  Search company or skill…" oninput="renderBrowse()" />
+        <select id="q-l" onchange="renderBrowse()">
+          <option value="">📍 All Locations</option>
+            <option>Abia</option>
+            <option>Adamawa</option>
+            <option>Akwa Ibom</option>
+            <option>Anambra</option>
+            <option>Bauchi</option>
+            <option>Bayelsa</option>
+            <option>Benue</option>
+            <option>Borno</option>
+            <option>Cross River</option>
+            <option>Delta</option>
+            <option>Ebonyi</option>
+            <option>Edo</option>
+            <option>Ekiti</option>
+            <option>Enugu</option>
+            <option>Imo</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Lagos</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Ogun</option>
+            <option>Ondo</option>
+            <option>Osun</option>
+            <option>Oyo</option>
+            <option>Plateau</option>
+            <option>Rivers</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT</option>
+          </select>
+        <select id="q-i" onchange="renderBrowse()">
+          <option value="">🏢 All Industries</option>
+            <option>Tech</option>
+            <option>Bank</option>
+            <option>Medical</option>
+            <option>Media</option>
+            <option>Engineering</option>
+        </select>
+        <button class="btn-green" onclick="renderBrowse()">Search</button>
+        <button class="btn-outline" onclick="clearFilters()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="browse-content">
+    <div id="b-tip" style="display:none;background:#e8f8f0;color:#136e3f;border-radius:8px;padding:9px 14px;font-size:.8rem;font-weight:600;margin-bottom:14px;"></div>
+    <p style="font-size:.78rem;color:var(--text-light);margin-bottom:16px;" id="b-label"></p>
+    <div class="cards-grid" id="b-grid"></div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Made by Cynthia Adianu with ❤️ for Nigerian Students &nbsp;·&nbsp; &copy; <span id="year"></span> <span>NaijIntern</span> &nbsp;·&nbsp; Powered by ITF & SIWES Standards</p>
+  </footer>
+</div>
+
+
+<!-- PAGE 3 — DASHBOARD -->
+<div class="page" id="page-dashboard">
+
+  <!-- NOT LOGGED IN -->
+  <div class="dash-locked" id="dash-locked" style="display:none;">
+    <div class="auth-card" style="text-align:center;">
+      <div style="font-size:3rem;margin-bottom:16px;">🔐</div>
+      <h3 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:8px;">You're not logged in</h3>
+      <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:24px;">Please register or sign in to access your student dashboard.</p>
+      <button class="btn-green full" onclick="goTo('login')">Login / Register</button>
+    </div>
+  </div>
+
+  <!-- LOGGED IN -->
+    <div class="dash-layout" id="dash-layout" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside class="dash-sidebar">
+      <div class="prof-block">
+        <div class="prof-avatar">
+          <img id="prof-img" src="" alt="avatar"
+            onerror="this.style.display='none';document.getElementById('prof-fb').style.display='flex';" />
+          <div class="prof-fb" id="prof-fb">?</div>
+        </div>
+        <div class="prof-name"   id="prof-name">—</div>
+        <div class="prof-dept"   id="prof-dept">—</div>
+        <div class="prof-school" id="prof-school">—</div>
+      </div>
+      <hr class="side-divider"/>
+      <button class="side-btn active" onclick="switchTab(this,'t-overview')">📊 Overview</button>
+      <button class="side-btn" onclick="switchTab(this,'t-apps')">📋 Applications</button>
+      <button class="side-btn" onclick="goTo('browse')">🔍 Browse Companies</button>
+      <button class="side-btn" onclick="switchTab(this,'t-profile')">👤 Edit Profile</button>
+      <hr class="side-divider"/>
+      <button class="side-btn danger" onclick="doLogout()">🚪 Logout</button>
+    </aside>
+
+    <!-- Main -->
+    <main class="dash-main">
+
+      <!-- OVERVIEW TAB -->
+      <div class="dash-tab active" id="t-overview">
+        <div class="dash-top-row">
+          <div>
+            <h2 class="dash-page-title" id="d-welcome">Welcome back!</h2>
+            <p class="dash-page-sub">Here's a summary of your placement activity</p>
+          </div>
+          <button class="btn-green" style="font-size:.8rem;" onclick="goTo('browse')">+ Apply to a Company</button>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box">
+            <div class="stat-ico">📋</div>
+            <div><div class="stat-num" id="d-tot" style="color:var(--navy);">0</div><div class="stat-lbl">Total Applications</div></div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-ico">⏳</div>
+            <div><div class="stat-num" id="d-pen" style="color:var(--gold);">0</div><div class="stat-lbl">Pending Review</div></div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-ico">✅</div>
+            <div><div class="stat-num" id="d-acc" style="color:var(--green);">0</div><div class="stat-lbl">Accepted</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            📋 Recent Applications
+            <button class="btn-outline" style="font-size:.73rem;padding:5px 12px;" onclick="switchTabById('t-apps')">View All</button>
+          </div>
+          <div id="rec-body"></div>
+        </div>
+      </div>
+
+      <!-- APPLICATIONS TAB -->
+      <div class="dash-tab" id="t-apps">
+        <h2 class="dash-page-title">My Applications</h2>
+        <p class="dash-page-sub">Track the status of all your placement applications</p>
+        <div class="panel">
+          <div class="panel-head">All Applications <span id="apps-count" style="background:var(--gray-bg);color:var(--text-mid);font-size:.7rem;padding:2px 8px;border-radius:20px;font-weight:700;margin-left:6px;">0</span></div>
+          <div id="all-body"></div>
+        </div>
+      </div>
+
+      <!-- EDIT PROFILE TAB -->
+      <div class="dash-tab" id="t-profile">
+        <h2 class="dash-page-title">Edit My Profile</h2>
+        <p class="dash-page-sub">Update your details for better placement matches</p>
+        <div class="panel">
+          <div class="panel-head">Profile Information</div>
+          <div style="padding:24px;">
+            <form onsubmit="saveProfile(event)">
+              <div class="form-group">
+                <label class="lbl">Profile Picture</label>
+                <input type="file" id="p-pic" accept="image/*" />
+                <label for="p-pic" class="pic-upload-wrap" id="p-pic-wrap">
+                  <div class="pic-preview" id="p-pic-preview">📷</div>
+                  <div class="pic-upload-info">
+                    <div class="pic-label">Click to change your photo</div>
+                    <div class="pic-hint">JPG, PNG or WEBP · Max 2MB</div>
+                  </div>
+                </label>
+                <div class="file-ok" id="p-pic-ok"></div>
+              </div>
+              <div class="form-row form-group">
+                <div><label class="lbl">First Name</label><input type="text" id="p-fn"/></div>
+                <div><label class="lbl">Last Name</label><input type="text" id="p-ln"/></div>
+              </div>
+              <div class="form-row form-group">
+                <div><label class="lbl">School</label><input type="text" id="p-sc"/></div>
+                <div><label class="lbl">Department</label><input type="text" id="p-dp"/></div>
+              </div>
+              <button type="submit" class="btn-green" style="margin-top:8px;">Save Changes</button>
+              <div class="form-group">
+                <label class="lbl">Skills <span style="font-weight:400;color:var(--text-light)">(tick all that apply)</span></label>
+                <div class="check-grid" id="p-sk">
+                  <div class="check-item"><input type="checkbox" value="HTML" id="pe-html"><label for="pe-html">HTML/CSS</label></div>
+                  <div class="check-item"><input type="checkbox" value="CSS" id="pe-css"><label for="pe-css">Bootstrap</label></div>
+                  <div class="check-item"><input type="checkbox" value="JavaScript" id="pe-js"><label for="pe-js">JavaScript</label></div>
+                  <div class="check-item"><input type="checkbox" value="Python" id="pe-py"><label for="pe-py">Networking</label></div>
+                  <div class="check-item"><input type="checkbox" value="Java" id="pe-jv"><label for="pe-jv">Management</label></div>
+                  <div class="check-item"><input type="checkbox" value="SQL" id="pe-sql"><label for="pe-sql">Sciences</label></div>
+                  <div class="check-item"><input type="checkbox" value="Excel" id="pe-xl"><label for="pe-xl">Mass Communication</label></div>
+                  <div class="check-item"><input type="checkbox" value="AutoCAD" id="pe-cad"><label for="pe-cad">Medical Sciences</label></div>
+                  <div class="check-item"><input type="checkbox" value="Networking" id="pe-net"><label for="pe-net">Art</label></div>
+                  <div class="check-item"><input type="checkbox" value="Linux" id="pe-lnx"><label for="pe-lnx">Agriculture</label></div>
+                  <div class="check-item"><input type="checkbox" value="Writing" id="pe-wr"><label for="pe-wr">HSE</label></div>
+                  <div class="check-item"><input type="checkbox" value="Photoshop" id="pe-ps"><label for="pe-ps">Journalism</label></div>
+                  <div class="check-item"><input type="checkbox" value="MATLAB" id="pe-mat"><label for="pe-mat">IT</label></div>
+                  <div class="check-item"><input type="checkbox" value="Power BI" id="pe-pbi"><label for="pe-pbi">Engineering</label></div>
+                  <div class="check-item"><input type="checkbox" value="Microsoft Office" id="pe-mso"><label for="pe-mso">Physical Science</label></div>
+                </div>
+              </div>
+              <button type="submit" class="btn-green" style="margin-top:8px;">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="site-footer">
+    <p>Made by Cynthia Adianu with ❤️ for Nigerian Students &nbsp;·&nbsp; &copy; <span id="year"></span> <span>NaijIntern</span> &nbsp;·&nbsp; Powered by ITF & SIWES Standards</p>
+  </footer>
+</div>
+
+
+<!-- PAGE 4 — LOGIN / REGISTER -->
+<div class="page" id="page-login">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-brand">Naij<span>Intern</span></div>
+      <p class="auth-sub">👩‍🎓 Student Portal — Register or Sign In</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-reg" onclick="switchAuth('register')">Register</button>
+        <button class="auth-tab"        id="tab-log" onclick="switchAuth('login')">Sign In</button>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="s-reg">
+        <form id="regForm" onsubmit="doRegister(event)" novalidate>
+          <div class="form-row form-group">
+            <div>
+              <label class="lbl">First Name *</label>
+              <input type="text" id="r-fn" placeholder="e.g. Chidinma"/>
+              <div class="err-msg" id="e-fn"></div>
+            </div>
+            <div>
+              <label class="lbl">Last Name *</label>
+              <input type="text" id="r-ln" placeholder="e.g. Okonkwo"/>
+              <div class="err-msg" id="e-ln"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="lbl">Email Address *</label>
+            <input type="email" id="r-em" placeholder="e.g. chi@unilag.edu.ng"/>
+            <div class="err-msg" id="e-em"></div>
+          </div>
+          <div class="form-row form-group">
+            <div>
+              <label class="lbl">University *</label>
+              <select id="r-sc">
+                <option value="">Select school</option>
+                  <option>University of Lagos (UNILAG)</option>
+                  <option>University of Ibadan (UI)</option>
+                  <option>Obafemi Awolowo University (OAU)</option>
+                  <option>University of Nigerian (UNN)</option>
+                  <option>Ahmadu Bello Univeristy (ABU)</option>
+                  <option>Covenant University (CU)</option>
+                  <option>Federal University of Akure (FUTA)</option>
+                  <option>University of Benin (UNIBEN)</option>
+                  <option>Other</option>
+              </select>
+              <div class="err-msg" id="e-sc"></div>
+            </div>
+            <div>
+              <label class="lbl">Department *</label>
+              <input type="text" id="r-dp" placeholder="e.g. Computer Science"/>
+              <div class="err-msg" id="e-dp"></div>
+            </div>
+          </div>
+          <div class="form-row form-group">
+            <div>
+              <label class="lbl">Level *</label>
+              <select id="r-lv">
+                <option value="">Select level</option>
+                <option>200 Level</option>
+                <option>300 Level</option>
+                <option>400 Level</option>
+              </select>
+              <div class="err-msg" id="e-lv"></div>
+            </div>
+            <div>
+              <label class="lbl">State *</label>
+              <select id="r-lo">
+                <option value="">Select state</option>
+                  <option>Abia</option>
+                  <option>Adamawa</option>
+                  <option>Akwa Ibom</option>
+                  <option>Anambra</option>
+                  <option>Bauchi</option>
+                  <option>Bayelsa</option>
+                  <option>Benue</option>
+                  <option>Borno</option>
+                  <option>Cross River</option>
+                  <option>Delta</option>
+                  <option>Ebonyi</option>
+                  <option>Edo</option>
+                  <option>Ekiti</option>
+                  <option>Enugu</option>
+                  <option>Imo</option>
+                  <option>Jigawa</option>
+                  <option>Kaduna</option>
+                  <option>Kano</option>
+                  <option>Katsina</option>
+                  <option>Kebbi</option>
+                  <option>Kogi</option>
+                  <option>Kwara</option>
+                  <option>Lagos</option>
+                  <option>Nasarawa</option>
+                  <option>Niger</option>
+                  <option>Ogun</option>
+                  <option>Ondo</option>
+                  <option>Osun</option>
+                  <option>Oyo</option>
+                  <option>Plateau</option>
+                  <option>Rivers</option>
+                  <option>Sokoto</option>
+                  <option>Taraba</option>
+                  <option>Yobe</option>
+                  <option>Zamfara</option>
+                  <option>FCT</option>
+              </select>
+              <div class="err-msg" id="e-lo"></div>
+            </div>
+          </div>
+           <div class="form-group">
+            <label class="lbl">Skills * <span style="font-weight:400;color:var(--text-light)">(tick all that apply)</span></label>
+            <div class="check-grid" id="r-sk">
+              <div class="check-item"><input type="checkbox" value="HTML" id="sk-html"><label for="sk-html">HTML</label></div>
+              <div class="check-item"><input type="checkbox" value="CSS" id="sk-css"><label for="sk-css">CSS</label></div>
+              <div class="check-item"><input type="checkbox" value="JavaScript" id="sk-js"><label for="sk-js">JavaScript</label></div>
+              <div class="check-item"><input type="checkbox" value="Python" id="sk-py"><label for="sk-py">Networking</label></div>
+              <div class="check-item"><input type="checkbox" value="Java" id="sk-jv"><label for="sk-jv">Management</label></div>
+              <div class="check-item"><input type="checkbox" value="SQL" id="sk-sq"><label for="sk-sq">Sciences</label></div>
+              <div class="check-item"><input type="checkbox" value="Excel" id="sk-xl"><label for="sk-xl">Mass Communication</label></div>
+              <div class="check-item"><input type="checkbox" value="AutoCAD" id="sk-cd"><label for="sk-cd">Medical Sciences</label></div>
+              <div class="check-item"><input type="checkbox" value="Networking" id="sk-nt"><label for="sk-nt">Art</label></div>
+              <div class="check-item"><input type="checkbox" value="Linux" id="sk-lx"><label for="sk-lx">Agriculture</label></div>
+              <div class="check-item"><input type="checkbox" value="Writing" id="sk-wr"><label for="sk-wr">HSE</label></div>
+              <div class="check-item"><input type="checkbox" value="Photoshop" id="sk-ps"><label for="sk-ps">Journalism</label></div>
+              <div class="check-item"><input type="checkbox" value="MATLAB" id="sk-mat"><label for="sk-mat">IT</label></div>
+              <div class="check-item"><input type="checkbox" value="Power BI" id="sk-pbi"><label for="sk-pbi">Engineering</label></div>
+              <div class="check-item"><input type="checkbox" value="Microsoft Office" id="sk-mso"><label for="sk-mso">Physical Sciences</label></div>
+            </div>
+            <div class="err-msg" id="e-sk"></div>
+          </div>
+          <div class="form-group">
+            <label class="lbl">Profile Picture <span style="font-weight:400;color:var(--text-light)">(Optional)</span></label>
+            <input type="file" id="r-pic" accept="image/*" />
+            <label for="r-pic" class="pic-upload-wrap" id="pic-wrap">
+              <div class="pic-preview" id="pic-preview">📷</div>
+              <div class="pic-upload-info">
+                <div class="pic-label">Click to upload your photo</div>
+                <div class="pic-hint">JPG, PNG or WEBP · Max 2MB</div>
+              </div>
+            </label>
+            <div class="file-ok" id="pic-ok"></div>
+          </div>
+          <div class="form-group">
+            <label class="lbl">Upload CV * <span style="font-weight:400;color:var(--text-light)">(PDF or DOC)</span></label>
+            <input type="file" id="r-cv" accept=".pdf,.doc,.docx"/>
+            <label for="r-cv" class="file-upload-btn" id="cv-label">
+              <span class="upload-icon">📄</span>
+              <div>
+                <div class="upload-text">Click to upload your CV</div>
+                <div class="upload-hint">PDF, DOC or DOCX accepted</div>
+              </div>
+            </label>
+            <div class="err-msg" id="e-cv"></div>
+            <div class="file-ok" id="cv-ok"></div>
+          </div>
+          <div class="form-row form-group">
+            <div>
+              <label class="lbl">Password *</label>
+              <input type="password" id="r-pw" placeholder="Min. 6 characters"/>
+              <div class="err-msg" id="e-pw"></div>
+            </div>
+            <div>
+              <label class="lbl">Confirm Password *</label>
+              <input type="password" id="r-pw2" placeholder="Repeat password"/>
+              <div class="err-msg" id="e-pw2"></div>
+            </div>
+          </div>
+          <button type="submit" class="btn-green full">Create Account</button>
+        </form>
+        <p style="text-align:center;margin-top:16px;font-size:.78rem;color:var(--text-light);">
+          Already have an account? <a href="#" onclick="switchAuth('login')" style="color:var(--green);font-weight:600;">Sign in</a>
+        </p>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="s-log" style="display:none;">
+        <form id="logForm" onsubmit="doLogin(event)" novalidate>
+          <div class="form-group">
+            <label class="lbl">Email Address *</label>
+            <input type="email" id="l-em" placeholder="Your registered email"/>
+            <div class="err-msg" id="e-lem"></div>
+          </div>
+          <div class="form-group">
+            <label class="lbl">Password *</label>
+            <input type="password" id="l-pw" placeholder="Your password"/>
+            <div class="err-msg" id="e-lpw"></div>
+          </div>
+          <button type="submit" class="btn-green full" style="margin-top:8px;">Sign In</button>
+        </form>
+        <p style="text-align:center;margin-top:16px;font-size:.78rem;color:var(--text-light);">
+          New here? <a href="#" onclick="switchAuth('register')" style="color:var(--green);font-weight:600;">Create an account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
